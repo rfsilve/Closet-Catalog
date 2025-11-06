@@ -10,13 +10,18 @@ export default function HomeScreen() {
       </TouchableOpacity>
 
       {/* Placeholder clothing list */}
-      <ScrollView contentContainerStyle={styles.clothingList}>
+      <View style={styles.clothingList}>
         {['Outwear', 'Top', 'Bottom', 'Accessory'].map((item, index) => (
           <View key={index} style={styles.clothingItem}>
             <Text style={styles.placeholderText}>{item}</Text>
           </View>
         ))}
-      </ScrollView>
+      </View>
+
+      {/* Add Repick Button */}
+      <TouchableOpacity style={styles.repickButton}>
+        <Text style={styles.repickText}>Repick</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -61,5 +66,22 @@ const styles = StyleSheet.create({
   placeholderText: {
     fontSize: 18,
     color: '#666',
+  },
+  repickButton: {
+    position: 'absolute',
+    height: 75,
+    width: 100,
+    bottom: 30,
+    alignSelf: 'center',
+    backgroundColor: '#f32121ff',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  repickText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 30,
+    textAlign: 'center',
   },
 });
