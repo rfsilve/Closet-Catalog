@@ -4,17 +4,14 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-nati
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
-      {/* Room at the top for future features */}
-      <View style={styles.topSpace}></View>
-
       {/* Add Clothes button */}
       <TouchableOpacity style={styles.addButton}>
-        <Text style={styles.addText}>+ Add Clothes</Text>
+        <Text style={styles.addText}>Add Clothes</Text>
       </TouchableOpacity>
 
       {/* Placeholder clothing list */}
       <ScrollView contentContainerStyle={styles.clothingList}>
-        {['Headwear', 'Outwear', 'Top', 'Bottom', 'Shoes'].map((item, index) => (
+        {['Outwear', 'Top', 'Bottom', 'Accessory'].map((item, index) => (
           <View key={index} style={styles.clothingItem}>
             <Text style={styles.placeholderText}>{item}</Text>
           </View>
@@ -30,33 +27,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 20,
   },
-  topSpace: {
-    height: 80, // space at top for later features
-  },
   addButton: {
     position: 'absolute',
+    height: 100,
+    width: 130,
     left: 20,
     top: 100,
     backgroundColor: '#4CAF50',
-    paddingVertical: 10,
-    paddingHorizontal: 15,
     borderRadius: 8,
-    zIndex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   addText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: 33,
+    textAlign: 'center',
   },
   clothingList: {
-    marginTop: 160,
-    paddingBottom: 40,
+    marginTop: 200,
+    gap: 10,
+    alignItems: 'center',
   },
   clothingItem: {
+    width: 140,
+    height: 125,
     borderWidth: 1,
     borderColor: '#000000ff',
     padding: 20,
-    marginVertical: 10,
     borderRadius: 10,
     alignItems: 'center',
   },
