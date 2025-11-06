@@ -40,7 +40,7 @@ export default function HomeScreen() {
       {/* Add Wardrobe Button and Image */}
       <TouchableOpacity style={styles.wardrobeButton}>
         <Image
-          source={require('../../assets/images/wardrobe.png')}
+          source={require('@/assets/images/wardrobe.png')}
           style={styles.wardrobeIcon}
         />
         <Text style={styles.wardrobeText}>Wardrobe</Text>
@@ -169,4 +169,5 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     tintColor: 'white',
   },
+
 });
