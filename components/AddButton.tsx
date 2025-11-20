@@ -1,9 +1,11 @@
-import React from 'react';
+import { useRouter } from 'expo-router';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 export default function AddButton() {
+  const router = useRouter();
+
   return (
-    <TouchableOpacity style={styles.addButton}>
+    <TouchableOpacity style={styles.addButton} onPress={() => router.push('/add-clothes')}>
       <Text style={styles.addText}>Add Clothes</Text>
     </TouchableOpacity>
   );
@@ -26,5 +28,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 33,
     textAlign: 'center',
-  }
+  },
 });
