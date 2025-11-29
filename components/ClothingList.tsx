@@ -1,42 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CATEGORIES = ["Outwear", "Top", "Bottom", "Shoes"];
+const ORDER = ["Top", "Bottom", "Outwear", "Shoes"];
 
-export default function ClothingList() {
-  const [items, setItems] = useState<any[]>([]);
-
-  useEffect(() => {
-    loadClothes();
-  }, []);
-
-  async function loadClothes() {
-    const stored = await AsyncStorage.getItem("clothes");
-    const arr = stored ? JSON.parse(stored) : [];
-    setItems(arr);
-  }
-
-  function getItemForCategory(category: string) {
-    // Just return the FIRST item in that category for now
-    return items.find((item) => item.category === category) || null;
-  }
-
+export default function ClothingList({ clothes }) {
   return (
     <View style={styles.list}>
-      {CATEGORIES.map((cat) => {
-        const clothingItem = getItemForCategory(cat);
+      {ORDER.map((category) => {
+        const item = clothes.find((c) => c && c.category === category);
 
         return (
-          <View key={cat} style={styles.box}>
-            {clothingItem ? (
+          <View key={category} style={styles.box}>
+            {item ? (
               <Image
-                source={{ uri: clothingItem.image }}
+                source={{ uri: item.image + "?t=" + Date.now() }}
                 style={styles.image}
                 resizeMode="cover"
               />
             ) : (
-              <Text style={styles.placeholder}>{cat}</Text>
+              <Text style={styles.placeholder}>{category}</Text>
             )}
           </View>
         );

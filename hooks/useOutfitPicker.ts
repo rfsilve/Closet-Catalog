@@ -17,8 +17,8 @@ function shuffle<T>(arr: T[]): T[] {
 
 function matchColor(base: any, options: any[]) {
   if (!base || options.length === 0) return null;
-  const allowedStrict = harmony[base.color] || [];
-  const strictMatch = options.find(o => allowedStrict.includes(o.color));
+  const allowed = harmony[base.color] || [];
+  const strictMatch = options.find(o => allowed.includes(o.color));
   if (strictMatch) return strictMatch;
   return options[Math.floor(Math.random() * options.length)];
 }
@@ -37,17 +37,17 @@ export default function useOutfitPicker() {
     const outerwear = shuffle(await loadCategory("outerwear"));
     const shoes = shuffle(await loadCategory("shoes"));
 
-    if (!tops.length || !bottoms.length || !shoes.length) {
-      setOutfit(null);
-      return;
-    }
-
-    const top = tops[Math.floor(Math.random() * tops.length)];
+    const top = tops.length ? tops[Math.floor(Math.random() * tops.length)] : null;
     const bottom = matchColor(top, bottoms);
-    const jacket = matchColor(top, outerwear) || null;
+    const jacket = matchColor(top, outerwear);
     const shoe = matchColor(top, shoes);
 
-    setOutfit({ top, bottom, jacket, shoe });
+    setOutfit({
+      top,
+      bottom,
+      outerwear,
+      shoes,
+    });
   }
 
   useEffect(() => {

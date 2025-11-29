@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
@@ -7,6 +8,7 @@ import RerollButton from '@/components/RerollButton';
 import LaundryButton from '@/components/LaundryButton';
 import WardrobeButton from '@/components/WardrobeButton';
 import useOutfitPicker from '@/hooks/useOutfitPicker';
+import { TouchableOpacity, Text } from 'react-native';
 
 export default function HomeScreen() {
   const { outfit, refresh } = useOutfitPicker();
