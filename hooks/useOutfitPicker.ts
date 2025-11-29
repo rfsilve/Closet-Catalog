@@ -2,14 +2,21 @@ import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const harmony: Record<string, string[]> = {
-  red: ["black", "white", "gray"],
-  blue: ["white", "gray", "tan"],
-  green: ["white", "black", "brown"],
-  black: ["red", "blue", "white", "green", "tan"],
-  white: ["red", "blue", "green", "black", "tan"],
-  tan: ["white", "black", "blue"],
-  gray: ["white", "black", "red"],
+  red:    ["black", "white", "gray", "pink", "tan"],
+  orange: ["white", "tan", "brown", "black"],
+  yellow: ["white", "gray", "blue", "tan", "brown"],
+  green:  ["white", "black", "brown", "tan", "gray"],
+  blue:   ["white", "gray", "black", "beige", "tan"],
+  purple: ["white", "gray", "black", "pink"],
+  brown:  ["white", "tan", "beige", "green", "yellow"],
+  black:  ["white", "gray", "red", "blue", "green", "pink", "purple", "orange", "yellow", "tan", "brown"],
+  white:  ["black", "gray", "red", "blue", "green", "pink", "purple", "yellow", "tan", "brown", "beige"],
+  gray:   ["white", "black", "red", "blue", "pink", "purple", "yellow"],
+  pink:   ["white", "gray", "black", "red", "purple"],
+  beige:  ["white", "brown", "tan", "blue", "green"],
+  tan:    ["white", "black", "brown", "beige", "blue", "green", "yellow"],
 };
+
 
 function shuffle<T>(arr: T[]): T[] {
   return [...arr].sort(() => Math.random() - 0.5);
