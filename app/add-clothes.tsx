@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, Image, TouchableOpacity, TextInput, StyleSheet } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Stack } from 'expo-router';
 
 const VALID_COLORS = [
   "red", "orange", "yellow", "green", "blue", "purple",
@@ -25,7 +26,6 @@ export default function AddClothesScreen() {
     }
   }
 
-  // SAVE FUNCTION
   async function saveItem() {
     if (!image || !category || !VALID_COLORS.includes(color.toLowerCase())) {
       alert("Please fill out everything correctly.");
@@ -51,86 +51,98 @@ export default function AddClothesScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Add New Clothing</Text>
+    <>
+      <Stack.Screen
+        options={{
+          title: "Add Clothes",
+          headerBackTitle: "Back",
+        }}
+      />
 
-      {/* IMAGE PICKER */}
-      <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
-        {image ? (
-          <Image source={{ uri: image }} style={styles.preview} />
-        ) : (
-          <Text>Select Image</Text>
+      <View style={styles.container}>
+        <Text style={styles.title}>Add New Clothing</Text>
+
+        {/* IMAGE PICKER */}
+        <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
+          {image ? (
+            <Image source={{ uri: image }} style={styles.preview} />
+          ) : (
+            <Text style={{ color: "black" }}>Select Image</Text>
+          )}
+        </TouchableOpacity>
+
+        {/* CATEGORY PICKER */}
+        <Text style={styles.label}>Category</Text>
+        <View style={styles.categoryRow}>
+          {["Outwear", "Top", "Bottom", "Accessory"].map((c) => (
+            <TouchableOpacity
+              key={c}
+              style={[styles.categoryButton, category === c && styles.selected]}
+              onPress={() => setCategory(c)}
+            >
+              <Text style={styles.categoryText}>{c}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* COLOR INPUT */}
+        <Text style={styles.label}>Color</Text>
+        <TextInput
+          placeholder="Enter a color"
+          placeholderTextColor="#888"
+          style={styles.input}
+          value={color}
+          onChangeText={setColor}
+        />
+        {!VALID_COLORS.includes(color.toLowerCase()) && color.length > 0 && (
+          <Text style={{ color: "red" }}>Invalid color</Text>
         )}
-      </TouchableOpacity>
 
-      {/* CATEGORY PICKER */}
-      <Text style={styles.label}>Category</Text>
-      <View style={styles.categoryRow}>
-        {["Outwear", "Top", "Bottom", "Accessory"].map((c) => (
-          <TouchableOpacity
-            key={c}
-            style={[styles.categoryButton, category === c && styles.selected]}
-            onPress={() => setCategory(c)}
-          >
-            <Text style={styles.categoryText}>{c}</Text>
-          </TouchableOpacity>
-        ))}
+        {/* MATERIAL */}
+        <Text style={styles.label}>Material</Text>
+        <TextInput
+          placeholder="e.g., cotton, denim"
+          placeholderTextColor="#888"
+          style={styles.input}
+          value={material}
+          onChangeText={setMaterial}
+        />
+
+        <Button title="Save Clothing Item" onPress={saveItem} />
       </View>
-
-      {/* COLOR INPUT (Strict) */}
-      <Text style={styles.label}>Color</Text>
-      <TextInput
-        placeholder="Enter a color"
-        style={styles.input}
-        value={color}
-        onChangeText={setColor}
-      />
-      {!VALID_COLORS.includes(color.toLowerCase()) && color.length > 0 && (
-        <Text style={{ color: "red" }}>Invalid color</Text>
-      )}
-
-      {/* MATERIAL */}
-      <Text style={styles.label}>Material</Text>
-      <TextInput
-        placeholder="e.g., cotton, denim"
-        style={styles.input}
-        value={material}
-        onChangeText={setMaterial}
-      />
-
-      <Button title="Save Clothing Item" onPress={saveItem} />
-    </View>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontSize: 26, fontWeight: "bold", marginBottom: 20, color: "#ffffffff" },
+  container: { flex: 1, padding: 20, backgroundColor: "black" },
+  title: { fontSize: 26, fontWeight: "bold", marginBottom: 20, color: "white" },
   imagePicker: {
     height: 200,
-    backgroundColor: "#ffffffff",
+    backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
     marginBottom: 20,
   },
   preview: { width: "100%", height: "100%", borderRadius: 10 },
-  label: { fontWeight: "bold", marginTop: 10, color: "#ffffffff" },
+  label: { fontWeight: "bold", marginTop: 10, color: "white" },
   input: {
     borderWidth: 1,
     padding: 10,
     borderRadius: 8,
     marginBottom: 10,
-    color: "#ffffffff",
+    color: "white",
+    borderColor: "white",
   },
   categoryRow: { flexDirection: "row", gap: 10, marginVertical: 10 },
   categoryButton: {
     padding: 10,
-    backgroundColor: "#ffffffff",
+    backgroundColor: "white",
     borderRadius: 8,
   },
   selected: {
     backgroundColor: "#4CAF50",
   },
-  categoryText: { color: "#000000ff" },
+  categoryText: { color: "#000" },
 });
