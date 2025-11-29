@@ -36,16 +36,25 @@ export default function AddClothesScreen() {
       id: Date.now().toString(),
       image,
       category,
-      color,
+      color: color.toLowerCase(),
       material,
     };
 
-    const existing = await AsyncStorage.getItem('clothes');
+    let key = "";
+    if (category === "Top") key = "tops";
+    if (category === "Bottom") key = "bottoms";
+    if (category === "Outerwear") key = "outerwear";
+    if (category === "Shoes") key = "shoes";
+
+    if (!key) {
+      alert("Invalid category.");
+      return;
+    }
+
+    const existing = await AsyncStorage.getItem(key);
     const arr = existing ? JSON.parse(existing) : [];
-
     arr.push(newItem);
-
-    await AsyncStorage.setItem('clothes', JSON.stringify(arr));
+    await AsyncStorage.setItem(key, JSON.stringify(arr));
 
     alert("Saved!");
   }
@@ -62,7 +71,6 @@ export default function AddClothesScreen() {
       <View style={styles.container}>
         <Text style={styles.title}>Add New Clothing</Text>
 
-        {/* IMAGE PICKER */}
         <TouchableOpacity onPress={pickImage} style={styles.imagePicker}>
           {image ? (
             <Image source={{ uri: image }} style={styles.preview} />
@@ -71,10 +79,9 @@ export default function AddClothesScreen() {
           )}
         </TouchableOpacity>
 
-        {/* CATEGORY PICKER */}
         <Text style={styles.label}>Category</Text>
         <View style={styles.categoryRow}>
-          {["Outwear", "Top", "Bottom", "Shoes"].map((c) => (
+          {["Outerwear", "Top", "Bottom", "Shoes"].map((c) => (
             <TouchableOpacity
               key={c}
               style={[styles.categoryButton, category === c && styles.selected]}
@@ -85,7 +92,6 @@ export default function AddClothesScreen() {
           ))}
         </View>
 
-        {/* COLOR INPUT */}
         <Text style={styles.label}>Color</Text>
         <TextInput
           placeholder="Enter a color"
@@ -94,11 +100,11 @@ export default function AddClothesScreen() {
           value={color}
           onChangeText={setColor}
         />
+
         {!VALID_COLORS.includes(color.toLowerCase()) && color.length > 0 && (
           <Text style={{ color: "red" }}>Invalid color</Text>
         )}
 
-        {/* MATERIAL */}
         <Text style={styles.label}>Material</Text>
         <TextInput
           placeholder="e.g., cotton, denim"
@@ -141,8 +147,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 8,
   },
-  selected: {
-    backgroundColor: "#4CAF50",
-  },
+  selected: { backgroundColor: "#4CAF50" },
   categoryText: { color: "#000" },
 });

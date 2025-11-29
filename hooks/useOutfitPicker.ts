@@ -8,13 +8,19 @@ const harmony: Record<string, string[]> = {
   black: ["red", "blue", "white", "green", "tan"],
   white: ["red", "blue", "green", "black", "tan"],
   tan: ["white", "black", "blue"],
-  gray: ["white", "black", "red"]
+  gray: ["white", "black", "red"],
 };
+
+function shuffle<T>(arr: T[]): T[] {
+  return [...arr].sort(() => Math.random() - 0.5);
+}
 
 function matchColor(base: any, options: any[]) {
   if (!base || options.length === 0) return null;
-  const allowed = harmony[base.color] || [];
-  return options.find(o => allowed.includes(o.color)) || null;
+  const allowedStrict = harmony[base.color] || [];
+  const strictMatch = options.find(o => allowedStrict.includes(o.color));
+  if (strictMatch) return strictMatch;
+  return options[Math.floor(Math.random() * options.length)];
 }
 
 export default function useOutfitPicker() {
@@ -26,17 +32,20 @@ export default function useOutfitPicker() {
   }
 
   async function pickOutfit() {
-    const tops = await loadCategory("tops");
-    const bottoms = await loadCategory("bottoms");
-    const outerwear = await loadCategory("outerwear");
-    const shoes = await loadCategory("shoes");
+    const tops = shuffle(await loadCategory("tops"));
+    const bottoms = shuffle(await loadCategory("bottoms"));
+    const outerwear = shuffle(await loadCategory("outerwear"));
+    const shoes = shuffle(await loadCategory("shoes"));
 
-    if (!tops.length || !bottoms.length || !shoes.length) return;
+    if (!tops.length || !bottoms.length || !shoes.length) {
+      setOutfit(null);
+      return;
+    }
 
-    const top = tops[0];
-    const bottom = matchColor(top, bottoms) || bottoms[0];
-    const jacket = matchColor(top, outerwear) || outerwear[0] || null;
-    const shoe = matchColor(top, shoes) || shoes[0];
+    const top = tops[Math.floor(Math.random() * tops.length)];
+    const bottom = matchColor(top, bottoms);
+    const jacket = matchColor(top, outerwear) || null;
+    const shoe = matchColor(top, shoes);
 
     setOutfit({ top, bottom, jacket, shoe });
   }
