@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
-const ORDER = ["Top", "Bottom", "Outwear", "Shoes"];
+const ORDER = ["Top", "Bottom", "Outerwear", "Shoes"];
 
 export default function ClothingList({ clothes }) {
   return (
