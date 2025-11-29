@@ -17,7 +17,7 @@ export default function AddClothesScreen() {
 
   async function pickImage() {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ["images"],
       quality: 1,
     });
 
@@ -74,7 +74,7 @@ export default function AddClothesScreen() {
         {/* CATEGORY PICKER */}
         <Text style={styles.label}>Category</Text>
         <View style={styles.categoryRow}>
-          {["Outwear", "Top", "Bottom", "Accessory"].map((c) => (
+          {["Outwear", "Top", "Bottom", "Shoes"].map((c) => (
             <TouchableOpacity
               key={c}
               style={[styles.categoryButton, category === c && styles.selected]}

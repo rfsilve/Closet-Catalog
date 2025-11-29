@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
 
-export default function RerollButton() {
+export default function RerollButton({ onPress }: { onPress?: () => void }) {
   return (
-    <TouchableOpacity style={styles.rerollButton}>
+    <TouchableOpacity style={styles.rerollButton} onPress={onPress}>
       <Image
         source={require('@/assets/images/reroll.png')}
         style={styles.rerollIcon}

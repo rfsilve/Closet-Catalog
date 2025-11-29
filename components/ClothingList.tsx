@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const CATEGORIES = ["Outwear", "Top", "Bottom", "Accessory"];
+const CATEGORIES = ["Outwear", "Top", "Bottom", "Shoes"];
 
 export default function ClothingList() {
   const [items, setItems] = useState<any[]>([]);
