@@ -1,9 +1,15 @@
 import React from 'react';
 import { TouchableOpacity, Image, Text, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
 
 export default function WardrobeButton() {
+  const router = useRouter();
+
   return (
-    <TouchableOpacity style={styles.wardrobeButton}>
+    <TouchableOpacity
+      style={styles.wardrobeButton}
+      onPress={() => router.push('/wardrobe')}
+    >
       <Image
         source={require('@/assets/images/wardrobe.png')}
         style={styles.wardrobeIcon}
