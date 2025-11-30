@@ -1,14 +1,14 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ScrollView,
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
-import { Stack } from "expo-router";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FILTERS = ["All", "Top", "Bottom", "Outerwear", "Shoes"];
 
