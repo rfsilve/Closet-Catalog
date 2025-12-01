@@ -2,12 +2,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Alert,
 } from "react-native";
 
 const FILTERS = ["All", "Top", "Bottom", "Outerwear", "Shoes"];
@@ -21,7 +22,6 @@ export default function WardrobeScreen() {
     const bottoms = JSON.parse((await AsyncStorage.getItem("bottoms")) || "[]");
     const outer = JSON.parse((await AsyncStorage.getItem("outerwear")) || "[]");
     const shoes = JSON.parse((await AsyncStorage.getItem("shoes")) || "[]");
-
     setAllItems([...tops, ...bottoms, ...outer, ...shoes]);
   }
 
@@ -29,10 +29,32 @@ export default function WardrobeScreen() {
     loadClothes();
   }, []);
 
-  const filtered =
-    filter === "All"
-      ? allItems
-      : allItems.filter((i) => i.category === filter);
+  async function deleteItem(id: string, category: string) {
+    let key = "";
+    if (category === "Top") key = "tops";
+    if (category === "Bottom") key = "bottoms";
+    if (category === "Outerwear") key = "outerwear";
+    if (category === "Shoes") key = "shoes";
+    if (!key) return;
+
+    const stored = JSON.parse((await AsyncStorage.getItem(key)) || "[]");
+    const newArr = stored.filter((item: any) => item.id !== id);
+    await AsyncStorage.setItem(key, JSON.stringify(newArr));
+    setAllItems((prev) => prev.filter((item) => item.id !== id));
+  }
+
+  function confirmDelete(id: string, category: string) {
+    Alert.alert("Delete item", "Are you sure you want to delete this item?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => deleteItem(id, category),
+      },
+    ]);
+  }
+
+  const filtered = filter === "All" ? allItems : allItems.filter((i) => i.category === filter);
 
   return (
     <>
@@ -43,7 +65,6 @@ export default function WardrobeScreen() {
         }}
       />
 
-      {/* FILTER BUTTONS */}
       <View style={styles.filterRow}>
         {FILTERS.map((f) => (
           <TouchableOpacity
@@ -51,29 +72,26 @@ export default function WardrobeScreen() {
             onPress={() => setFilter(f)}
             style={[styles.filterButton, filter === f && styles.selectedFilter]}
           >
-            <Text
-              style={{
-                color: filter === f ? "white" : "black",
-                fontWeight: "bold",
-              }}
-            >
+            <Text style={{ color: filter === f ? "white" : "black", fontWeight: "bold" }}>
               {f}
             </Text>
           </TouchableOpacity>
         ))}
       </View>
 
-      {/* GRID OF CLOTHES */}
       <ScrollView contentContainerStyle={styles.grid}>
         {filtered.map((item) => (
           <View key={item.id} style={styles.itemBox}>
-            <Image
-              source={{ uri: item.image }}
-              style={styles.image}
-              resizeMode="cover"
-            />
+            <Image source={{ uri: item.image }} style={styles.image} resizeMode="cover" />
             <Text style={styles.label}>{item.category}</Text>
             <Text style={styles.color}>{item.color}</Text>
+
+            <TouchableOpacity
+              onPress={() => confirmDelete(item.id, item.category)}
+              style={styles.deleteButton}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>Delete</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
@@ -104,6 +122,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
+    justifyContent: "flex-start",
   },
   itemBox: {
     width: "30%",
@@ -126,5 +145,14 @@ const styles = StyleSheet.create({
   color: {
     marginBottom: 5,
     color: "#555",
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    width: "100%",
+    paddingVertical: 8,
+    alignItems: "center",
+    marginTop: 5,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
 });
